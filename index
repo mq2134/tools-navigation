@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI工具导航</title>
+    <style>
+        :root {
+            --primary-color: #4a6bdf;
+            --hover-color: #3a56b7;
+            --bg-color: #f5f7ff;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        #search {
+            width: 80%;
+            max-width: 500px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #search:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 107, 223, 0.2);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-name {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .tool-description {
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        
+        .visit-btn {
+            padding: 10px 0;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: block;
+            cursor: pointer;
+        }
+        
+        .visit-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .category-title {
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .category-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI工具导航站</h1>
+            <p class="subtitle">优质AI工具集合，提升您的工作与创作效率</p>
+            <div class="search-container">
+                <input type="text" id="search" placeholder="搜索AI工具..." autocomplete="off">
+            </div>
+        </header>
+        
+        <main>
+            <div class="tools-grid" id="toolsContainer">
+                <!-- Tool cards will be dynamically inserted here -->
+            </div>
+        </main>
+        
+        <footer>
+            <p>© 2025 AI工具导航站 | 更新日期: 2025年4月1日</p>
+        </footer>
+    </div>
+    
+    <script>
+        // AI工具数据
+        const tools = [
+            {
+                name: "Perplexity",
+                description: "实时搜索引擎，提供精准答案及引用来源。",
+                url: "https://www.perplexity.ai",
+                category: "搜索与问答"
+            },
+            {
+                name: "深言达意-找词找句",
+                description: "中文写作辅助工具，智能生成文案金句与段落润色。",
+                url: "https://www.shenyandayi.com/",
+                category: "写作辅助"
+            },
+            {
+                name: "Claude",
+                description: "Anthropic公司开发的AI对话系统，支持超长上下文处理。",
+                url: "https://www.claude.ai",
+                category: "对话助手"
+            },
+            {
+                name: "ChatGPT",
+                description: "OpenAI的旗舰AI对话模型，多功能覆盖。",
+                url: "https://chat.openai.com",
+                category: "对话助手"
+            },
+            {
+                name: "橙篇AI",
+                description: "专注于科学类严肃内容及长文本处理的AI工具。",
+                url: "https://cp.baidu.com/",
+                category: "专业内容"
+            },
+            {
+                name: "奇域-中国风",
+                description: "国风内容生成平台，涵盖古诗创作与艺术设计。",
+                url: "#",
+                category: "创意生成"
+            },
+            {
+                name: "语鲸",
+                description: "智能语音交互系统，实时转写与会议纪要生成。",
+                url: "https://lingowhale.com/home",
+                category: "语音处理"
+            },
+            {
+                name: "DeepSeek-探索未至之境",
+                description: "深度求索公司的AGI产品，包含数学推理与代码生成。",
+                url: "https://chat.deepseek.com/",
+                category: "专业工具"
+            },
+            {
+                name: "海螺视频",
+                description: "AI视频创作工具，实现文本到短视频的自动化生成。",
+                url: "https://hailuoai.com/video",
+                category: "视频创作"
+            },
+            {
+                name: "腾讯元宝",
+                description: "腾讯混元生态产品，支持多端使用的AI助手。",
+                url: "#",
+                category: "综合助手"
+            },
+            {
+                name: "即梦AI",
+                description: "全流程AI创作平台，整合创意构思到发布管理。",
+                url: "https://jimeng.jianying.com/ai-tool/home",
+                category: "创意平台"
+            }
+        ];
+        
+        // 渲染工具卡片
+        function renderTools(toolsArray) {
+            const toolsContainer = document.getElementById('toolsContainer');
+            toolsContainer.innerHTML = '';
+            
+            if (toolsArray.length === 0) {
+                toolsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px;">没有找到匹配的工具</p>';
+                return;
+            }
+            
+            toolsArray.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                
+                card.innerHTML = `
+                    <h3 class="tool-name">${tool.name}</h3>
+                    <p class="tool-description">${tool.description}</p>
+                    <a href="${tool.url}" class="visit-btn" target="_blank">访问网站</a>
+                `;
+                
+                toolsContainer.appendChild(card);
+            });
+        }
+        
+        // 搜索功能
+        document.getElementById('search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredTools = tools.filter(tool => 
+                tool.name.toLowerCase().includes(searchTerm) || 
+                tool.description.toLowerCase().includes(searchTerm) ||
+                tool.category.toLowerCase().includes(searchTerm)
+            );
+            renderTools(filteredTools);
+        });
+        
+        // 初始化页面
+        window.onload = function() {
+            renderTools(tools);
+        };
+    </script>
+</body>
+</html>
